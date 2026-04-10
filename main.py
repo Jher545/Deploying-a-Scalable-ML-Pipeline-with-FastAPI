@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 
 from ml.data import apply_label, process_data
 from ml.model import inference, load_model
-import lb
 
 # DO NOT MODIFY
 class Data(BaseModel):
@@ -34,6 +33,9 @@ encoder = load_model(encoder_path)
 
 model_path = os.path.join(project_path, "model", "model.pkl")
 model = load_model(model_path)
+
+path_lb = os.path.join(project_path, "model", "lb.pkl")
+lb = load_model(path_lb)
 
 # TODO: create a RESTful API using FastAPI
 app = FastAPI()
@@ -75,4 +77,4 @@ async def post_inference(data: Data):
         lb=lb
     )
     _inference = inference(model, data_processed)
-    return {"result": apply_label(_inference[0])}
+    return {"result": apply_label(_inference)}
