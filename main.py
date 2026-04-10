@@ -24,23 +24,22 @@ class Data(BaseModel):
     capital_gain: int = Field(..., example=0, alias="capital-gain")
     capital_loss: int = Field(..., example=0, alias="capital-loss")
     hours_per_week: int = Field(..., example=40, alias="hours-per-week")
-    native_country: str = Field(..., example="United-States", alias="native-country")
+    native_country: str = Field(..., example="United-States", alias="native-country"
+    )
 
+current_dir = os.path.dirname(__file__)
 
-project_path = "/workspace/Deploying-a-Scalable-ML-Pipeline-with-FastAPI"
-encoder_path = os.path.join(project_path, "model", "encoder.pkl")
+encoder_path = os.path.join(current_dir, "model", "encoder.pkl")
 encoder = load_model(encoder_path)
 
-model_path = os.path.join(project_path, "model", "model.pkl")
+model_path = os.path.join(current_dir, "model", "model.pkl")
 model = load_model(model_path)
 
-path_lb = os.path.join(project_path, "model", "lb.pkl")
+path_lb = os.path.join(current_dir, "model", "lb.pkl")
 lb = load_model(path_lb)
 
 # TODO: create a RESTful API using FastAPI
 app = FastAPI()
-
-# TODO: create a GET on the root giving a welcome message
 @app.get("/")
 async def get_root():
     """ Say hello!"""
@@ -51,7 +50,6 @@ async def get_root():
 # TODO: create a POST on a different path that does model inference
 @app.post("/data/")
 async def post_inference(data: Data):
-    # DO NOT MODIFY: turn the Pydantic model into a dict.
     data_dict = data.dict()
     # DO NOT MODIFY: clean up the dict to turn it into a Pandas DataFrame.
     # The data has names with hyphens and Python does not allow those as variable names.
